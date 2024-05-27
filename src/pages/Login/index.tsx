@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../../shared/hooks";
+
 import {
   Box,
   Button,
@@ -13,6 +14,7 @@ import {
 } from "@mui/material";
 
 import * as yup from "yup";
+import logo from "../../img/LOGO.png"
 
 const loginSchema = yup.object().shape({
   email: yup.string().email().required(),
@@ -59,70 +61,117 @@ export const Login = () => {
 
   return !isAuthenticated ? (
     <Box
-      width="100vw"
-      height="100vh"
       display="flex"
+      height="100vh"
       alignItems="center"
       justifyContent="center"
+      bgcolor="#ffff"
     >
-      <Box alignSelf="start">
-        <h1>Login page</h1>
-        <Link to="/">Ir para Landing page</Link>
-      </Box>
+      <Card
+        sx={{
+          display: "flex",
+          width: "55%",
+          height: "70%",
+          borderRadius: "16px",
+          boxShadow: 10,
+        }}
+      >
+        <CardContent
+          sx={{
+            width: "50%",
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
+            padding: "2rem",
+          }}
+        >
+          <Typography variant="h4" align="center" gutterBottom>
+            Login
+          </Typography>
+          <Typography
+            variant="body2"
+            color="error"
+            align="center"
+            gutterBottom
+          >
+            {passwordError || emailError ? "Usuário ou senha incorretos" : ""}
+          </Typography>
 
-      <Card>
-        <CardContent>
-          <Box display="flex" flexDirection="column" gap={2} width={250}>
-            <Typography variant="h6" align="center">
-              Entrar
-            </Typography>
+          <TextField
+            fullWidth
+            label="Matrícula"
+            type="email"
+            value={email}
+            disabled={isLoading}
+            error={!!emailError}
+            helperText={emailError}
+            onKeyDown={() => setEmailError("")}
+            onChange={(e) => setEmail(e.target.value)}
+            margin="normal"
+          />
 
-            <TextField
-              fullWidth
-              type="email"
-              label="Email"
-              value={email}
-              disabled={isLoading}
-              error={!!emailError}
-              helperText={emailError}
-              onKeyDown={() => setEmailError("")}
-              onChange={(e) => setEmail(e.target.value)}
-            />
+          <TextField
+            fullWidth
+            label="Senha"
+            type="password"
+            value={password}
+            disabled={isLoading}
+            error={!!passwordError}
+            helperText={passwordError}
+            onKeyDown={() => setPasswordError("")}
+            onChange={(e) => setPassword(e.target.value)}
+            margin="normal"
+          />
 
-            <TextField
-              fullWidth
-              label="Senha"
-              type="password"
-              value={password}
-              disabled={isLoading}
-              error={!!passwordError}
-              helperText={passwordError}
-              onKeyDown={() => setPasswordError("")}
-              onChange={(e) => setPassword(e.target.value)}
-            />
-          </Box>
+          <Link to="/" style={{ alignSelf: "center", marginTop: "0.5rem" }}>
+            Esqueci minha Senha
+          </Link>
+
+          <Button
+            variant="contained"
+            fullWidth
+            disabled={isLoading}
+            onClick={handleSubmit}
+            sx={{
+              marginTop: "1rem",
+              backgroundColor: "#004d40",
+              "&:hover": { backgroundColor: "#00332c" },
+            }}
+            endIcon={
+              isLoading ? (
+                <CircularProgress
+                  variant="indeterminate"
+                  color="inherit"
+                  size={20}
+                />
+              ) : undefined
+            }
+          >
+            Entrar
+          </Button>
         </CardContent>
-
-        <CardActions>
-          <Box>
-            <Button
-              variant="contained"
-              disabled={isLoading}
-              onClick={handleSubmit}
-              endIcon={
-                isLoading ? (
-                  <CircularProgress
-                    variant="indeterminate"
-                    color="inherit"
-                    size={20}
-                  />
-                ) : undefined
-              }
-            >
-              Entrar
-            </Button>
-          </Box>
-        </CardActions>
+        <Box
+          sx={{
+            width: "50%",
+            backgroundColor: "#e1ece1",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            borderRadius: "100px",
+            borderTopRightRadius: "16px",
+            borderBottomRightRadius: "16px",
+          }}
+        >
+            <img
+            src={logo}
+            alt="Logo"
+            style={{
+              maxWidth: "90%",
+              maxHeight: "100%",
+              objectFit: "contain",
+            }}
+          />
+        </Box>
       </Card>
     </Box>
   ) : undefined;
